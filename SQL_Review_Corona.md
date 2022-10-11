@@ -8,6 +8,11 @@ SELECT COUNT(country) AS Total_Amount_Of_Countries FROM Countries;
 
 ## Give the total population per continent
 
+```sql
+SELECT continent , SUM(CONVERT(bigint, population)) AS TotalPopulation FROM Countries
+GROUP BY continent;
+```
+
 ```
 continent	TotalPopulation
 Africa	1371693397.0
@@ -19,6 +24,13 @@ South America	433953687.0
 ```
 
 ## Which country with more than 1 000 000 inhabitants, has the highest life expectancy?
+
+```sql
+SELECT TOP 1 country, life_expectancy
+FROM Countries
+WHERE population > 1000000
+ORDER BY life_expectancy DESC;
+```
 
 - Hong Kong
 
