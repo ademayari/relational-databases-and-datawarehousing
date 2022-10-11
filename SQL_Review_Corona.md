@@ -66,9 +66,9 @@ ORDER BY life_expectancy DESC;
 
 - 2721134.355
 
-# The first lockdown in Belgium started on 18 march 2020. Give all the data until 21 days afterwards to be able to check if the lockdown had any effect.
+## The first lockdown in Belgium started on 18 march 2020. Give all the data until 21 days afterwards to be able to check if the lockdown had any effect.
 
-# In which month (month + year) the number of deaths was the highest in Belgium?
+## In which month (month + year) the number of deaths was the highest in Belgium?
 
 - Reported year Reported month Total number of deaths
 - 2020 4 68890
