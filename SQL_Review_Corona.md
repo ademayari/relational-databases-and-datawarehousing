@@ -1,4 +1,4 @@
-## How many countries can be found in the dataset?
+## 1. How many countries can be found in the dataset?
 
 ```sql
 SELECT COUNT(country) AS Total_Amount_Of_Countries FROM Countries;
@@ -6,7 +6,7 @@ SELECT COUNT(country) AS Total_Amount_Of_Countries FROM Countries;
 
 - **223**
 
-## Give the total population per continent
+## 2. Give the total population per continent.
 
 ```sql
 SELECT continent , SUM(CONVERT(bigint, population)) AS TotalPopulation FROM Countries
@@ -22,7 +22,7 @@ GROUP BY continent;
 | Oceania       | 43198762.0      |
 | South America | 433953687.0     |
 
-## Which country with more than 1 000 000 inhabitants, has the highest life expectancy?
+## 3. Which country with more than 1 000 000 inhabitants, has the highest life expectancy?
 
 ```sql
 SELECT TOP 1 country, life_expectancy
@@ -33,7 +33,7 @@ ORDER BY life_expectancy DESC;
 
 - Hong Kong
 
-## Calculate the average life_expectancy for each continent, take into account the population for each country.
+## 4. Calculate the average life_expectancy for each continent, take into account the population for each country.
 
 ```sql
 SELECT continent, SUM(population * life_expectancy * 1.0)/SUM(population * 1.0) as 'Average_Life_Expectancy'
@@ -50,7 +50,7 @@ GROUP BY continent;
 | Oceania       | 78,4352067462026        |
 | South America | 76,033448358465         |
 
-## Give the country with the highest number of Corona deaths
+## 5. Give the country with the highest number of Corona deaths.
 
 ```sql
 SELECT country, SUM(new_deaths) AS TotalDeaths
@@ -70,7 +70,7 @@ ORDER BY 2 DESC
 
 - United States 9002200
 
-## On which day was 50% of the Belgians fully vaccinated?
+## 6. On which day was 50% of the Belgians fully vaccinated?
 
 ```sql
 SELECT MIN(report_date) AS DagVaccinatiePercent50
@@ -80,7 +80,7 @@ WHERE c.country = 'Belgium' AND people_fully_vaccinated >= c.population / 2;
 
 - 2021-04-014
 
-## On which day the first Belgian received a vaccin?
+## 7. On which day the first Belgian received a vaccin?
 
 ```sql
 SELECT TOP 1 report_date AS DagEersteVaccinatieOoit
@@ -91,7 +91,7 @@ ORDER BY people_fully_vaccinated ASC;
 
 - 2020-12-28
 
-## On which day the first Corona death was reported in Europe?
+## 8. On which day the first Corona death was reported in Europe?
 
 ```sql
 SELECT TOP 1 report_date AS EersteCovidDodeEU
@@ -102,7 +102,7 @@ ORDER BY report_date ASC;
 
 - 2020-01-30
 
-## What is the estimated total amount of smokers in Belgium? Subtract 2 000 000 children from the total Belgian population
+## 9. What is the estimated total amount of smokers in Belgium? Subtract 2 000 000 children from the total Belgian population.
 
 ```sql
 SELECT (female_smokers + male_smokers) / 200 * (population - 2000000) AS TotaleSmokers
@@ -112,7 +112,7 @@ WHERE country = 'Belgium'
 
 - 2721134.355
 
-## The first lockdown in Belgium started on 18 march 2020. Give all the data until 21 days afterwards to be able to check if the lockdown had any effect.
+## 10. The first lockdown in Belgium started on 18 march 2020. Give all the data until 21 days afterwards to be able to check if the lockdown had any effect.
 
 ```sql
 SELECT * FROM CovidData cd INNER JOIN Countries c ON c.iso_code = cd.iso_code
@@ -120,7 +120,7 @@ WHERE country = 'Belgium' AND report_date BETWEEN '2020/03/18'
 AND DATEADD(day, 21,'2020/03/18');
 ```
 
-## In which month (month + year) the number of deaths was the highest in Belgium?
+## 11. In which month (month + year) the number of deaths was the highest in Belgium?
 
 ```sql
 Select SUM(new_deaths) as 'Deaths', MONTH(report_date) AS 'Month', YEAR(report_date) AS 'Year'
