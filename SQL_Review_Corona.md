@@ -13,7 +13,6 @@ SELECT continent , SUM(CONVERT(bigint, population)) AS TotalPopulation FROM Coun
 GROUP BY continent;
 ```
 
-```
 | continent     | TotalPopulation |
 | :------------ | :-------------- |
 | Africa        | 1371693397.0    |
@@ -22,7 +21,6 @@ GROUP BY continent;
 | North America | 592834824.0     |
 | Oceania       | 43198762.0      |
 | South America | 433953687.0     |
-```
 
 ## Which country with more than 1 000 000 inhabitants, has the highest life expectancy?
 
