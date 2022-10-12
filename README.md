@@ -4,11 +4,7 @@ Alle oplossingen per oefeningenreek die op Chamilo staat, dus NIET de oefeningen
 
 # Inhoudstafel
 
-<<<<<<< HEAD
-- Excercises Corona 1. [SQL Review Corona](Excercises%20Corona/SQL_Review_Corona.md) 
-=======
 - Excercises Northwind 1b. [SQL Review GROUP BY and statistical functions Northwind](Excercises%20Northwind/SQL_Review_GROUP_BY_and_statistical_functions_Solutions.md)
 - Excercises Northwind 1c. [SQL Review JOIN Northwind](Excercises%20Northwind/SQL_Review_GROUP_BY_and_statistical_functions_Solutions.md)
 
 - Excercises Corona 1. [SQL Review Corona](Excercises%20Corona/SQL_Review_Corona.md)
->>>>>>> 942c56f (haha peepoo)
