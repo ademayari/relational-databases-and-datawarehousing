@@ -20,8 +20,8 @@ WHERE c.CategoryName LIKE '%Dairy%'
 - Order by companyname.
 
 ```sql
-select s.SupplierID, s.CompanyName, count(DISTINCT od.OrderID) As NrOfOrders
-from Suppliers s join Products p ON s.SupplierID = p.SupplierID
+SELECT s.SupplierID, s.CompanyName, count(DISTINCT od.OrderID) AS NrOfOrders
+FROM Suppliers s JOIN Products p ON s.SupplierID = p.SupplierID
 JOIN OrderDetails od ON od.ProductID = p.ProductID
 GROUP BY s.SupplierID, s.CompanyName
 ORDER BY s.CompanyName
@@ -39,8 +39,8 @@ ORDER BY s.CompanyName
 ## 3. What’s for each category the lowest UnitPrice? Show category name and unit price.
 
 ```sql
-SELECT c.CategoryName, MIN(p.UnitPrice) As 'Minimum UnitPrice'
-FROM Products p join Categories c ON p.CategoryID = c.CategoryID
+SELECT c.CategoryName, MIN(p.UnitPrice) AS 'Minimum UnitPrice'
+FROM Products p JOIN Categories c ON p.CategoryID = c.CategoryID
 GROUP BY c.CategoryName
 ```
 
@@ -58,8 +58,8 @@ GROUP BY c.CategoryName
 ## 4. Give for each ordered product: productname, the least (columnname 'Min amount ordered') and the most ordered (columnname 'Max amount ordered'). Order by productname.
 
 ```sql
-SELECT p.ProductName, MIN(od.Quantity) As 'Min amount ordered', Max(od.Quantity) As 'Max amount ordered'
-FROM Products p join OrderDetails od ON p.ProductID = od.ProductID
+SELECT p.ProductName, MIN(od.Quantity) AS 'Min amount ordered', Max(od.Quantity) AS 'Max amount ordered'
+FROM Products p JOIN OrderDetails od ON p.ProductID = od.ProductID
 GROUP BY p.ProductName
 ORDER BY p.ProductName
 ```
@@ -78,8 +78,8 @@ ORDER BY p.ProductName
 - Make sure that the list also contains employees who don’t have orders yet.
 
 ```sql
-SELECT e.EmployeeID, e.FirstName + ' ' + e.LastName As 'Name', o.OrderID
-FROM Employees e left join Orders o on e.EmployeeID = o.EmployeeID
+SELECT e.EmployeeID, e.FirstName + ' ' + e.LastName AS 'Name', o.OrderID
+FROM Employees e LEFT JOIN Orders o ON e.EmployeeID = o.EmployeeID
 ```
 
 | EmployeeID | Name             | OrderID |
