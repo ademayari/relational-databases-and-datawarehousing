@@ -14,13 +14,14 @@ GROUP BY continent;
 ```
 
 ```
-continent	TotalPopulation
-Africa	1371693397.0
-Asia	4652616087.0
-Europe	749017998.0
-North America	592834824.0
-Oceania	43198762.0
-South America	433953687.0
+| continent     | TotalPopulation |
+| :------------ | :-------------- |
+| Africa        | 1371693397.0    |
+| Asia          | 4652616087.0    |
+| Europe        | 749017998.0     |
+| North America | 592834824.0     |
+| Oceania       | 43198762.0      |
+| South America | 433953687.0     |
 ```
 
 ## Which country with more than 1 000 000 inhabitants, has the highest life expectancy?
@@ -42,13 +43,14 @@ FROM Countries
 GROUP BY continent;
 ```
 
-- continent Average life expectancy
-- Africa 63,5113609481274
-- Asia 73,4205962661497
-- Europe 78,901189239207
-- North America 77,5262297006021
-- Oceania 78,4352067462026
-- South America 76,033448358465
+| continent Average life expectancy |
+| :-------------------------------- |
+| Africa 63,5113609481274           |
+| Asia 73,4205962661497             |
+| Europe 78,901189239207            |
+| North America 77,5262297006021    |
+| Oceania 78,4352067462026          |
+| South America 76,033448358465     |
 
 ## Give the country with the highest number of Corona deaths
 
@@ -130,8 +132,9 @@ GROUP BY MONTH(report_date), YEAR(report_date)
 ORDER BY 1 DESC
 ```
 
-- Reported year Reported month Total number of deaths
-- 2020 4 68890
-- 2020 11 50200
-- 2020 12 28830
-- 2020 5 18730
+| Reported year | Reported month | Total number of deaths |
+| :------------ | :------------- | :--------------------- |
+| 2020          | 4              | 68890                  |
+| 2020          | 11             | 50200                  |
+| 2020          | 12             | 28830                  |
+| 2020          | 5              | 18730                  |
