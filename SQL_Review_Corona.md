@@ -43,14 +43,14 @@ FROM Countries
 GROUP BY continent;
 ```
 
-| continent Average life expectancy |
-| :-------------------------------- |
-| Africa 63,5113609481274           |
-| Asia 73,4205962661497             |
-| Europe 78,901189239207            |
-| North America 77,5262297006021    |
-| Oceania 78,4352067462026          |
-| South America 76,033448358465     |
+| continent     | Average life expectancy |
+| :------------ | :---------------------- |
+| Africa        | 63,5113609481274        |
+| Asia          | 73,4205962661497        |
+| Europe        | 78,901189239207         |
+| North America | 77,5262297006021        |
+| Oceania       | 78,4352067462026        |
+| South America | 76,033448358465         |
 
 ## Give the country with the highest number of Corona deaths
 
