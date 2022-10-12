@@ -102,9 +102,7 @@ ORDER BY report_date ASC;
 
 - 2020-01-30
 
-## What is the estimated total amount of smokers in Belgium?
-
-## Subtract 2 000 000 children from the total Belgian population
+## What is the estimated total amount of smokers in Belgium? Subtract 2 000 000 children from the total Belgian population
 
 ```sql
 SELECT (female_smokers + male_smokers) / 200 * (population - 2000000) AS TotaleSmokers
