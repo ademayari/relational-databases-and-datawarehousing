@@ -4,4 +4,4 @@ Alle oplossingen per oefeningenreek die op Chamilo staat, dus NIET de oefeningen
 
 # Inhoudstafel
 
-- Excercises Corona 1. [SQL Review Corona](Excercises Corona/SQL_Review_Corona) 
+- Excercises Corona 1. [SQL](Excercises Corona/SQL_Review_Corona.md) 
