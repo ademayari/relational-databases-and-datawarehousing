@@ -22,13 +22,13 @@
 - Order the results in a descending way.
 - You could try to solve this taking into account that (_for now_) the number of fully vaccinated people is an always increasing number.
 - But once the vaccination campaign is done and old people are dying and new babies are born, it's possible this won't be the case any more.
-- | country              | (No column name) |
+  | country | (No column name) |
   | :------------------- | :--------------- |
-  | Gibraltar            | 1.229438128877   |
-  | Samoa                | 1.056514309697   |
-  | Brunei               | 1.006522743538   |
-  | Pitcairn             | 1.000000000000   |
-  | United Arab Emirates | 0.980100555665   |
+  | Gibraltar | 1.229438128877 |
+  | Samoa | 1.056514309697 |
+  | Brunei | 1.006522743538 |
+  | Pitcairn | 1.000000000000 |
+  | United Arab Emirates | 0.980100555665 |
 
 ## 5. Assume that all people in Belgium got fully vaccinated from elder to younger.
 
