@@ -1,10 +1,20 @@
 ## 1. On which day(s) the highest number of new cases was reported in Belgium?
 
+```sql
+SELECT new_cases, report_date FROM CovidData cd INNER JOIN Countries c ON c.iso_code = cd.iso_code
+WHERE country = 'Belgium' AND new_cases = (SELECT MAX(new_cases) FROM CovidData cd INNER JOIN Countries c ON c.iso_code = cd.iso_code WHERE country = 'Belgium');
+```
+
 | report_date             | new_cases |
 | :---------------------- | :-------- |
 | 2022-01-24 00:00:00.000 | 133480    |
 
 ## 2. On which day(s) the highest number of new deaths was reported for each country?
+
+```sql
+SELECT c.country, report_date, cd.new_deaths FROM CovidData cd INNER JOIN Countries c ON c.iso_code = cd.iso_code
+WHERE new_deaths = (SELECT MAX(new_deaths) FROM CovidData cd INNER JOIN Countries c ON c.iso_code = cd.iso_code);
+```
 
 | country       | report_date             | new_deaths |
 | :------------ | :---------------------- | :--------- |
@@ -12,9 +22,14 @@
 
 ## 3. Which country(ies) was(were) the first to start vaccinations?
 
+```sql
+SELECT c.country, report_date FROM CovidData cd INNER JOIN Countries c ON c.iso_code = cd.iso_code
+WHERE total_vaccinations IS NOT NULL AND report_date = (SELECT MIN(report_date) FROM CovidData cd INNER JOIN Countries c ON c.iso_code = cd.iso_code WHERE total_vaccinations IS NOT NULL);
+```
+
 | country | report_date             |
 | :------ | :---------------------- |
-| Latvia  | 2020-12-04 00:00:00.000 |
+| Norway  | 2020-12-02 00:00:00.000 |
 
 ## 4. Give for each country the percentage of fully vaccinated people.
 
@@ -22,13 +37,22 @@
 - Order the results in a descending way.
 - You could try to solve this taking into account that (_for now_) the number of fully vaccinated people is an always increasing number.
 - But once the vaccination campaign is done and old people are dying and new babies are born, it's possible this won't be the case any more.
-  | country | (No column name) |
-  | :------------------- | :--------------- |
-  | Gibraltar | 1.229438128877 |
-  | Samoa | 1.056514309697 |
-  | Brunei | 1.006522743538 |
-  | Pitcairn | 1.000000000000 |
-  | United Arab Emirates | 0.980100555665 |
+-
+
+```sql
+SELECT country, (CAST(people_fully_vaccinated AS FLOAT) / population) * 100 AS PercentageFullyVaccinated FROM CovidData cd INNER JOIN Countries c ON c.iso_code = cd.iso_code
+WHERE report_date = (SELECT MAX(report_date) FROM CovidData cd INNER JOIN Countries c ON c.iso_code = cd.iso_code) AND people_fully_vaccinated IS NOT NULL
+ORDER BY 2 DESC;
+```
+
+| country     | PercentageFullyVaccinated |
+| :---------- | :------------------------ |
+| South Korea | 87,0717352850737          |
+| Taiwan      | 84,7410824594987          |
+| Malaysia    | 83,9096759096045          |
+| Uruguay     | 83,0042993820642          |
+| Brazil      | 80,381854787783           |
+| Italy       | 79,4540539887782          |
 
 ## 5. Assume that all people in Belgium got fully vaccinated from elder to younger. We don't take into account people on priority lists like doctors, nurses, .... On which day all Belgians of 70 or older were fully vaccinated?
 
