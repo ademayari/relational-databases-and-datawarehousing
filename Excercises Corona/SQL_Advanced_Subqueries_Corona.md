@@ -6,9 +6,9 @@
 
 ## 2. On which day(s) the highest number of new deaths was reported for each country?
 
-| country                     | report_date new_deaths |
-| :-------------------------- | :--------------------- |
-| United States 2022-02-10 00 | 00:00.000 3251         |
+| country       | report_date             | new_deaths |
+| :------------ | :---------------------- | :--------- |
+| United States | 2022-02-10 00 00:00.000 | 3251       |
 
 ## 3. Which country(ies) was(were) the first to start vaccinations?
 
