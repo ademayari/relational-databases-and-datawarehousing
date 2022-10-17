@@ -30,12 +30,10 @@
   | Pitcairn | 1.000000000000 |
   | United Arab Emirates | 0.980100555665 |
 
-## 5. Assume that all people in Belgium got fully vaccinated from elder to younger.
+## 5. Assume that all people in Belgium got fully vaccinated from elder to younger. We don't take into account people on priority lists like doctors, nurses, .... On which day all Belgians of 70 or older were fully vaccinated?
 
-- We don't take into account people on priority lists like doctors, nurses, ...
-- On which day all Belgians of 70 or older were fully vaccinated?
-  | 2021-05-18 |
-  | :--------- |
+| 2021-05-18 |
+| :--------- |
 
 ## 6. Give an overview of the cumulative sum of Corona deaths for each country.
 
