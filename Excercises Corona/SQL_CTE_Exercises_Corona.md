@@ -37,18 +37,12 @@
 
 ## 3. What is the percentage of the total amount of new_cases that died in the following periods in Belgium; march 2020 - may 2020 / june 2020 - august 2020 / september 2020 - november 2020 / december 2020 - february 2021 / march 2021 - may 2021 / june 2021 - august 2021
 
-| march 2020 - may 2020 16.22%          |
-| :------------------------------------ |
-| june 2020 - august 2020 1.59%         |
-| :------------------------------------ |
-| september 2020 - november 2020 1.37%  |
-| :------------------------------------ |
-| december 2020 - february 2021 2.80%   |
-| :------------------------------------ |
-| march 2021 - may 2021 0.99%           |
-| :------------------------------------ |
-| june 2021 - august 2021 0.35%         |
-| :------------------------------------ |
+| march 2020 - may 2020 16.22% |
+| june 2020 - august 2020 1.59% |
+| september 2020 - november 2020 1.37% |
+| december 2020 - february 2021 2.80% |
+| march 2021 - may 2021 0.99% |
+| june 2021 - august 2021 0.35% |
 
 ## 4. Which country(ies) was(were) the first to have 50% of the population fully vaccinated
 
