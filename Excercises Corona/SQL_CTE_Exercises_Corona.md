@@ -23,7 +23,7 @@ WHERE report_date = '2021-04-01';
 
 ## 2. Give for each month the percentage of fully vaccinated people in Belgium at the end of the month
 
-**SOLUTION WITH CTE (COMMON TABLE EXPRESSION)**
+**OPLOSSING MET CTE (COMMON TABLE EXPRESSION)**
 
 ```sql
 WITH cte_end_month([month], [year], endday)
@@ -39,7 +39,7 @@ JOIN cte_end_month cte ON cte.endday = cd.report_date
 WHERE c.country = 'Belgium' AND cd.people_fully_vaccinated IS NOT NULL;
 ```
 
-**SOLUTION WITHOUT CTE**
+**OPLOSSING ZONDER CTE**
 
 ```sql
 SELECT MONTH(report_date), YEAR(report_date), FORMAT(cd.people_fully_vaccinated * 1.0 / c.population, 'P')
