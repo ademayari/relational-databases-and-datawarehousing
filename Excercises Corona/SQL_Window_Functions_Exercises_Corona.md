@@ -83,24 +83,27 @@
 
 ## Step 4: Give those weeks for which the number of hosp_patients rose with 50%.
 
-report_week report_year avg_number_hosp_patients avg_number_hosp_patients_previous_week relative_change
-13 2020 2759 729 2.78463648834019204
-14 2020 5161 2759 0.87060529177238129
-39 2020 546 351 0.55555555555555555
-42 2020 1789 1052 0.70057034220532319
-43 2020 3376 1789 0.88708775852431525
-44 2020 5813 3376 0.72186018957345971
+| report_week | report_year | avg_number_hosp_patients | avg_number_hosp_patients_previous_week | relative_change     |
+| :---------- | :---------- | :----------------------- | :------------------------------------- | :------------------ |
+| 13          | 2020        | 2759                     | 729                                    | 2.78463648834019204 |
+| 14          | 2020        | 5161                     | 2759                                   | 0.87060529177238129 |
+| 39          | 2020        | 546                      | 351                                    | 0.55555555555555555 |
+| 42          | 2020        | 1789                     | 1052                                   | 0.70057034220532319 |
+| 43          | 2020        | 3376                     | 1789                                   | 0.88708775852431525 |
+| 44          | 2020        | 5813                     | 3376                                   | 0.72186018957345971 |
 
 # 5 Rank the countries per continent based on the percentage of the population that is fully vaccinated.
 
 - The ranking shows the countries with the highest percentage of fully vaccinated people at the top and the countries with the lowest percentage at the bottom.
-- --iso_code country continent percentage fully vaccinated ranking
-  --SYC Seychelles Africa 82.10% 1
-  --RWA Rwanda Africa 79.00% 2
-  --MUS Mauritius Africa 76.78% 3
-  --MAR Morocco Africa 62.90% 4
-  --SHN Saint Helena Africa 57.93% 5
-  --BWA Botswana Africa 57.30% 6
+
+| iso_code | country      | continent | percentage_fully_vaccinated | ranking |
+| :------- | :----------- | :-------- | :-------------------------- | :------ |
+| SYC      | Seychelles   | Africa    | 82.10%                      | 1       |
+| RWA      | Rwanda       | Africa    | 79.00%                      | 2       |
+| MUS      | Mauritius    | Africa    | 76.78%                      | 3       |
+| MAR      | Morocco      | Africa    | 62.90%                      | 4       |
+| SHN      | Saint Helena | Africa    | 57.93%                      | 5       |
+| BWA      | Botswana     | Africa    | 57.30%                      | 6       |
 
 # 6 The Pareto principle, known as the "80-20" rule, says that 20% of the population owns 80% of the wealth. We are going to investigate whether 80% of the wealth is in 20% of the countries worldwide. Make the overview below to easily check this.
 
@@ -108,19 +111,20 @@ report_week report_year avg_number_hosp_patients avg_number_hosp_patients_previo
 - Only those countries whose population is not NULL and the gdp_per_capita is not NULL are included in the overview.
 - Note that the countries are sorted in descending order by wealth_land.
 
---country rijkdom_land nummer_land totaal_aantal_landen cumulatieve_som_rijkdom totale_rijkdom_wereldwijd percentage_landen percentage_rijkdom
---China 22109088,3712806 1 193 22109088,3712806 118414404,940934 0.52% 18.67%
---United States 18052468,367773 2 193 40161556,7390536 118414404,940934 1.04% 33.92%
---India 8954985,60374624 3 193 49116542,3427999 118414404,940934 1.55% 41.48%
---Japan 4916261,25491951 4 193 54032803,5977194 118414404,940934 2.07% 45.63%
---Germany 3794754,95847439 5 193 57827558,5561938 118414404,940934 2.59% 48.83%
---Russia 3613650,42489899 6 193 61441208,9810928 118414404,940934 3.11% 51.89%
---Indonesia 3092141,29731427 7 193 64533350,278407 118414404,940934 3.63% 54.50%
---Brazil 3018046,22345833 8 193 67551396,5018654 118414404,940934 4.15% 57.05%
---United Kingdom 2711454,04537782 9 193 70262850,5472432 118414404,940934 4.66% 59.34%
---France 2608363,24546742 10 193 72871213,7927106 118414404,940934 5.18% 61.54%
---Mexico 2258286,93890118 11 193 75129500,7316118 118414404,940934 5.70% 63.45%
---Turkey 2137067,91251698 12 193 77266568,6441288 118414404,940934 6.22% 65.25%
+| country        | rijkdom_land     | nummer_land | totaal_aantal_landen | cumulatieve_som_rijkdom | totale_rijkdom_wereldwijd | percentage_landen | percentage_rijkdom |
+| :------------- | :--------------- | :---------- | :------------------- | :---------------------- | :------------------------ | :---------------- | :----------------- |
+| China          | 22109088,3712806 | 1           | 193                  | 22109088,3712806        | 118414404,940934          | 0.52%             | 18.67%             |
+| United States  | 18052468,367773  | 2           | 193                  | 40161556,7390536        | 118414404,940934          | 1.04%             | 33.92%             |
+| India          | 8954985,60374624 | 3           | 193                  | 49116542,3427999        | 118414404,940934          | 1.55%             | 41.48%             |
+| Japan          | 4916261,25491951 | 4           | 193                  | 54032803,5977194        | 118414404,940934          | 2.07%             | 45.63%             |
+| Germany        | 3794754,95847439 | 5           | 193                  | 57827558,5561938        | 118414404,940934          | 2.59%             | 48.83%             |
+| Russia         | 3613650,42489899 | 6           | 193                  | 61441208,9810928        | 118414404,940934          | 3.11%             | 51.89%             |
+| Indonesia      | 3092141,29731427 | 7           | 193                  | 64533350,278407         | 118414404,940934          | 3.63%             | 54.50%             |
+| Brazil         | 3018046,22345833 | 8           | 193                  | 67551396,5018654        | 118414404,940934          | 4.15%             | 57.05%             |
+| United Kingdom | 2711454,04537782 | 9           | 193                  | 70262850,5472432        | 118414404,940934          | 4.66%             | 59.34%             |
+| France         | 2608363,24546742 | 10          | 193                  | 72871213,7927106        | 118414404,940934          | 5.18%             | 61.54%             |
+| Mexico         | 2258286,93890118 | 11          | 193                  | 75129500,7316118        | 118414404,940934          | 5.70%             | 63.45%             |
+| Turkey         | 2137067,91251698 | 12          | 193                  | 77266568,6441288        | 118414404,940934          | 6.22%             | 65.25%             |
 
 # 7 Rank all countries showing from what date in a country 0.1% of the population has already received a booster shot.
 
@@ -128,14 +132,15 @@ report_week report_year avg_number_hosp_patients avg_number_hosp_patients_previo
 - Sort ascending by date
 - Where is Belgium in Europe and in the world?
 
---iso_code country continent report_date ranking_continent ranking_world
---EST Estonia Europe 2021-02-26 00:00:00.000 1 1
---FRA France Europe 2021-06-15 00:00:00.000 2 2
---TUR Turkey Asia 2021-06-30 00:00:00.000 1 3
---DOM Dominican Republic North America 2021-07-05 00:00:00.000 1 4
---ARE United Arab Emirates Asia 2021-07-15 00:00:00.000 2 5
---ISR Israel Asia 2021-07-31 00:00:00.000 3 6
---THA Thailand Asia 2021-08-05 00:00:00.000 4 7
---KHM Cambodia Asia 2021-08-09 00:00:00.000 5 8
---URY Uruguay South America 2021-08-09 00:00:00.000 1 8
---CHL Chile South America 2021-08-11 00:00:00.000 2 10
+| iso_code | country              | continent     | report_date             | ranking_continent | ranking_world |
+| :------- | :------------------- | :------------ | :---------------------- | :---------------- | :------------ |
+| EST      | Estonia              | Europe        | 2021-02-26 00:00:00.000 | 1                 | 1             |
+| FRA      | France               | Europe        | 2021-06-15 00:00:00.000 | 2                 | 2             |
+| TUR      | Turkey               | Asia          | 2021-06-30 00:00:00.000 | 1                 | 3             |
+| DOM      | Dominican Republic   | North America | 2021-07-05 00:00:00.000 | 1                 | 4             |
+| ARE      | United Arab Emirates | Asia          | 2021-07-15 00:00:00.000 | 2                 | 5             |
+| ISR      | Israel               | Asia          | 2021-07-31 00:00:00.000 | 3                 | 6             |
+| THA      | Thailand             | Asia          | 2021-08-05 00:00:00.000 | 4                 | 7             |
+| KHM      | Cambodia             | Asia          | 2021-08-09 00:00:00.000 | 5                 | 8             |
+| URY      | Uruguay              | South America | 2021-08-09 00:00:00.000 | 1                 | 8             |
+| CHL      | Chile                | South America | 2021-08-11 00:00:00.000 | 2                 | 10            |
