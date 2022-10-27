@@ -58,11 +58,11 @@
 
 # 3. In the press conferences, Sciensano always gives updates on the weekly average instead of the absolute numbers, to eliminate weekend, ... effects.
 
-## 1 Calculate for each day the weekly average of the number of new_cases and new_deaths in Belgium
+## 1. Calculate for each day the weekly average of the number of new_cases and new_deaths in Belgium
 
-## 2 Calculate for each day the relative difference with the previous day in Belgium for the weekly average number of new cases
+## 2. Calculate for each day the relative difference with the previous day in Belgium for the weekly average number of new cases
 
-## 3 Give the day with the highest relative difference of weekly average number of new cases in Belgium after 2020-04-01
+## 3. Give the day with the highest relative difference of weekly average number of new cases in Belgium after 2020-04-01
 
 | report_date             | new_cases | new_deaths | weekly_avg_new_cases | weekly_avg_new_deaths | weekly_avg_new_cases_previous | relative_difference |
 | :---------------------- | :-------- | :--------- | :------------------- | :-------------------- | :---------------------------- | :------------------ |
