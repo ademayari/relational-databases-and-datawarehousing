@@ -123,7 +123,7 @@ rollback;
 ## (6) Calculate and print the total number of days and the total number of deaths during the second golf in Belgium
 
 - We define the beginning (ending) of a golf.
-- when the 14 days moving average of positive_rate becomes >= (<) 0.06.
+- When the 14 days moving average of positive_rate becomes >= (<) 0.06.
 
 /\*
 Start Golf 1: 07 Mar 2020
