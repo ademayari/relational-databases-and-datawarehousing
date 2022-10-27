@@ -1,34 +1,31 @@
--- 1. We want to investigate the height of the waves in some countries
--- You can only compare countries if you take into account there population.
+# 1. We want to investigate the height of the waves in some countries. You can only compare countries if you take into account there population.
 
--- Part 1
--- Show for Belgium, France and the Netherlands a ranking (per country)
--- of the days with the most new cases per 100.000 inhabitants
--- show only the top 5 days per country
+## Part 1
 
-/\*
+- Show for Belgium, France and the Netherlands a ranking (per country) of the days with the most new cases per 100.000 inhabitants.
+- Show only the top 5 days per country.
 
-report_date country cases_per_100000 rank_new_cases
-2022-01-24 00:00:00.000 Belgium 1147.491122589843 1
-2022-01-31 00:00:00.000 Belgium 853.775347234699 2
-2022-01-17 00:00:00.000 Belgium 630.105703636088 3
-2022-01-27 00:00:00.000 Belgium 587.027504540361 4
-2022-01-20 00:00:00.000 Belgium 579.832044024870 5
-2022-01-25 00:00:00.000 France 743.746866963714 1
-2022-01-18 00:00:00.000 France 687.891885310768 2
-2022-01-19 00:00:00.000 France 645.558847385135 3
-2022-01-26 00:00:00.000 France 632.192311286037 4
-2022-01-20 00:00:00.000 France 631.906657264653 5
-2022-02-07 00:00:00.000 Netherlands 2215.087159017472 1
-2022-01-30 00:00:00.000 Netherlands 653.504837276264 2
-2022-01-31 00:00:00.000 Netherlands 616.184829594480 3
-2022-02-05 00:00:00.000 Netherlands 552.573694641163 4
-2022-02-09 00:00:00.000 Netherlands 505.377772927813 5
+| report_date             | country     | cases_per_100000  | rank_new_cases |
+| :---------------------- | :---------- | :---------------- | :------------- |
+| 2022-01-24 00:00:00.000 | Belgium     | 1147.491122589843 | 1              |
+| 2022-01-31 00:00:00.000 | Belgium     | 853.775347234699  | 2              |
+| 2022-01-17 00:00:00.000 | Belgium     | 630.105703636088  | 3              |
+| 2022-01-27 00:00:00.000 | Belgium     | 587.027504540361  | 4              |
+| 2022-01-20 00:00:00.000 | Belgium     | 579.832044024870  | 5              |
+| 2022-01-25 00:00:00.000 | France      | 743.746866963714  | 1              |
+| 2022-01-18 00:00:00.000 | France      | 687.891885310768  | 2              |
+| 2022-01-19 00:00:00.000 | France      | 645.558847385135  | 3              |
+| 2022-01-26 00:00:00.000 | France      | 632.192311286037  | 4              |
+| 2022-01-20 00:00:00.000 | France      | 631.906657264653  | 5              |
+| 2022-02-07 00:00:00.000 | Netherlands | 2215.087159017472 | 1              |
+| 2022-01-30 00:00:00.000 | Netherlands | 653.504837276264  | 2              |
+| 2022-01-31 00:00:00.000 | Netherlands | 616.184829594480  | 3              |
+| 2022-02-05 00:00:00.000 | Netherlands | 552.573694641163  | 4              |
+| 2022-02-09 00:00:00.000 | Netherlands | 505.377772927813  | 5              |
 
-\*/
+## Part 2
 
--- Part 2
--- Give the top 10 of countries with more than 1.000.000 inhabitants with the highest number new cases per 100.000 inhabitants
+- Give the top 10 of countries with more than 1.000.000 inhabitants with the highest number new cases per 100.000 inhabitants.
 
 /\*
 
