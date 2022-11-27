@@ -5,6 +5,20 @@
 - Show for Belgium, France and the Netherlands a ranking (per country) of the days with the most new cases per 100.000 inhabitants.
 - Show only the top 5 days per country.
 
+```sql
+WITH cte1
+AS
+(SELECT report_date, c.country, new_cases * 100000.0 /population AS cases_per_100000,
+RANK() OVER (PARTITION BY c.country ORDER BY new_cases DESC) rank_new_cases
+FROM covidData cd JOIN countries c ON cd.iso_code = c.iso_code
+WHERE c.country IN ('Belgium','France','Netherlands'))
+
+SELECT *
+FROM cte1
+WHERE rank_new_cases <= 5
+ORDER BY country, rank_new_cases
+```
+
 | report_date             | country     | cases_per_100000  | rank_new_cases |
 | :---------------------- | :---------- | :---------------- | :------------- |
 | 2022-01-24 00:00:00.000 | Belgium     | 1147.491122589843 | 1              |
@@ -27,6 +41,30 @@
 
 - Give the top 10 of countries with more than 1.000.000 inhabitants with the highest number new cases per 100.000 inhabitants.
 
+```sql
+WITH cte1
+AS
+(SELECT report_date, c.country, new_cases * 100000.0 /population AS cases_per_100000
+FROM covidData cd JOIN countries c ON cd.iso_code = c.iso_code
+WHERE population > 1000000),
+
+cte2
+AS
+(SELECT country, MAX(cases_per_100000) AS max_cases_per_100000
+FROM cte1
+GROUP BY country),
+
+cte3 AS
+(SELECT *,
+RANK() OVER (ORDER BY max_cases_per_100000 DESC) rank_max_cases_per_100000
+FROM cte2)
+
+SELECT *
+FROM cte3
+WHERE rank_max_cases_per_100000 <= 10
+
+```
+
 | country     | max_cases_per_100000 | rank_max_cases_per_100000 |
 | :---------- | :------------------- | :------------------------ |
 | Greece      | 3544.865186663988    | 1                         |
@@ -41,6 +79,17 @@
 | Costa Rica  | 1078.136380379809    | 10                        |
 
 # 2. Make a ranking (high to low) of countries for the total number of deaths until now relative to the number of inhabitants. Show the rank number (1,2,3, ...), the country, relative number of deaths
+
+```sql
+WITH cte1(country, relative_number_of_deaths)
+AS
+(SELECT c.country, SUM(new_deaths * 1.0) / population
+FROM CovidData cd JOIN countries c ON cd.iso_code = c.iso_code
+GROUP BY c.country, population)
+
+SELECT *, RANK() OVER (ORDER BY relative_number_of_deaths DESC) AS rank_deaths
+FROM cte1
+```
 
 | country                | relative_number_of_deaths | rank_deaths |
 | :--------------------- | :------------------------ | :---------- |
@@ -64,6 +113,28 @@
 
 ## 3. Give the day with the highest relative difference of weekly average number of new cases in Belgium after 2020-04-01
 
+```sql
+WITH cte1
+AS
+(SELECT report_date, new_cases, new_deaths,
+AVG(new_cases * 1.0) OVER (ORDER BY report_date ROWS BETWEEN 6 PRECEDING AND current ROW) AS weekly_avg_new_cases,
+AVG(new_deaths * 1.0) OVER (ORDER BY report_date ROWS BETWEEN 6 PRECEDING AND current ROW) AS weekly_avg_new_deaths
+FROM CovidData cd JOIN countries c ON cd.iso_code = c.iso_code
+WHERE country = 'Belgium'),
+
+cte2
+AS
+(SELECT *,
+LAG(weekly_avg_new_cases) OVER (ORDER BY report_date) AS weekly_avg_new_cases_previous
+FROM cte1)
+
+SELECT * , (weekly_avg_new_cases - weekly_avg_new_cases_previous) / weekly_avg_new_cases AS 'relative difference'
+FROM cte2
+WHERE weekly_avg_new_cases <> 0 AND report_date > '2020-04-01'
+ORDER BY 'relative difference' DESC
+
+```
+
 | report_date             | new_cases | new_deaths | weekly_avg_new_cases | weekly_avg_new_deaths | weekly_avg_new_cases_previous | relative_difference |
 | :---------------------- | :-------- | :--------- | :------------------- | :-------------------- | :---------------------------- | :------------------ |
 | 2022-09-13 00:00:00.000 | 6907      | 30         | 1619.000000          | 6.285714              | 632.285714                    | 0.609459            |
@@ -83,6 +154,31 @@
 
 ## Step 4: Give those weeks for which the number of hosp_patients rose with 50%.
 
+```sql
+WITH cte1
+AS
+(SELECT report_date, hosp_patients,  DATEPART(WEEK,report_date) AS report_week, YEAR(report_date) AS report_year
+FROM CovidData cd JOIN countries c ON cd.iso_code = c.iso_code
+WHERE country = 'Belgium'),
+
+cte2
+AS
+(SELECT report_week, report_year, AVG(hosp_patients) AS avg_number_hosp_patients
+FROM cte1
+GROUP BY report_week, report_year),
+
+cte3
+AS
+(SELECT *,
+LAG(avg_number_hosp_patients) OVER (ORDER BY report_year, report_week) AS avg_number_hosp_patients_previous_week
+FROM cte2)
+
+SELECT  *, (avg_number_hosp_patients - avg_number_hosp_patients_previous_week) * 1.0 / avg_number_hosp_patients_previous_week AS relative_change
+FROM cte3
+WHERE (avg_number_hosp_patients - avg_number_hosp_patients_previous_week) * 1.0 / avg_number_hosp_patients_previous_week > 0.5
+
+```
+
 | report_week | report_year | avg_number_hosp_patients | avg_number_hosp_patients_previous_week | relative_change     |
 | :---------- | :---------- | :----------------------- | :------------------------------------- | :------------------ |
 | 13          | 2020        | 2759                     | 729                                    | 2.78463648834019204 |
@@ -93,6 +189,18 @@
 | 44          | 2020        | 5813                     | 3376                                   | 0.72186018957345971 |
 
 # 5 Rank the countries per continent based on the percentage of the population that is fully vaccinated.
+
+```sql
+WITH cte_1 AS (SELECT c.iso_code, c.country, c.continent, MAX(people_fully_vaccinated) * 1.0 / population AS percentage_vaccinated
+FROM countries c INNER JOIN coviddata cd ON c.iso_code = cd.iso_code
+GROUP BY c.iso_code, c.country,  c.continent, population)
+
+SELECT DISTINCT cte_1.iso_code, cte_1.country, cte_1.continent, FORMAT(cte_1.percentage_vaccinated, 'P') AS 'percentage fully vaccinated',
+DENSE_RANK() OVER (PARTITION BY continent ORDER BY percentage_vaccinated DESC) AS 'ranking'
+FROM cte_1
+WHERE percentage_vaccinated IS NOT NULL
+
+```
 
 - The ranking shows the countries with the highest percentage of fully vaccinated people at the top and the countries with the lowest percentage at the bottom.
 
@@ -110,6 +218,26 @@
 - wealth_land = population \* gdp_per_capita / 1000000 ( /1000000 serves to not make the numbers too large, this does not change the overview).
 - Only those countries whose population is not NULL and the gdp_per_capita is not NULL are included in the overview.
 - Note that the countries are sorted in descending order by wealth_land.
+
+```sql
+WITH cte_1
+AS
+(SELECT country, population * gdp_per_capita / 1000000 AS rijkdom_land
+FROM countries
+WHERE gdp_per_capita IS NOT NULL AND population IS NOT NULL),
+
+cte_2
+AS
+(SELECT country, rijkdom_land,
+ROW_NUMBER() OVER(ORDER BY rijkdom_land DESC) AS nummer_land,
+COUNT(country) OVER (ORDER BY rijkdom_land DESC RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS totaal_aantal_landen,
+SUM(rijkdom_land) OVER (ORDER BY rijkdom_land DESC RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulatieve_som_rijkdom,
+SUM(rijkdom_land) OVER (ORDER BY rijkdom_land DESC RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS totale_rijkdom_wereldwijd
+FROM cte_1)
+
+SELECT _ , FORMAT(nummer_land _ 1.0 / totaal_aantal_landen, 'P') AS percentage_landen, FORMAT(cumulatieve_som_rijkdom / totale_rijkdom_wereldwijd, 'P') AS percentage_rijkdom
+FROM cte_2
+```
 
 | country        | rijkdom_land     | nummer_land | totaal_aantal_landen | cumulatieve_som_rijkdom | totale_rijkdom_wereldwijd | percentage_landen | percentage_rijkdom |
 | :------------- | :--------------- | :---------- | :------------------- | :---------------------- | :------------------------ | :---------------- | :----------------- |
@@ -131,6 +259,21 @@
 - A ranking is made per continent and for the whole world
 - Sort ascending by date
 - Where is Belgium in Europe and in the world?
+
+```sql
+WITH cte
+AS
+(SELECT cd.iso_code, c.country, c.continent, MIN(cd.report_date) AS min_report_date
+FROM CovidData cd JOIN countries c ON cd.iso_code = c.iso_code
+WHERE cd.total_boosters * 1.0 / c.population > 0.001
+GROUP BY cd.iso_code, c.country, c.continent)
+
+SELECT iso_code, country, continent, min_report_date As report_date,
+rank() OVER (PARTITION BY continent ORDER BY continent, min_report_date ASC) AS ranking_continent,
+rank() OVER (ORDER BY min_report_date ASC) AS ranking_world
+FROM cte
+
+```
 
 | iso_code | country              | continent     | report_date             | ranking_continent | ranking_world |
 | :------- | :------------------- | :------------ | :---------------------- | :---------------- | :------------ |
