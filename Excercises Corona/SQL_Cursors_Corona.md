@@ -24,7 +24,9 @@ Africa
 - Total population = 433,953,687
 ```
 
-# Exercise 2: Give per continent a list with the 5 countries with the highest number of deaths.
+# Exercise 2
+
+## Give per continent a list with the 5 countries with the highest number of deaths.
 
 ## Step 1: Give a list of all continents. First give the SQL statement, then use a cursor to get the following layout.
 
