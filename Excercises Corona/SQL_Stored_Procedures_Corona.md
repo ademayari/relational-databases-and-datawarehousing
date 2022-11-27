@@ -15,45 +15,54 @@
 ## (4) Write testcode. Use transactions in order to keep the original data unchanged.
 
 - You can find the error messages in Messages.
-- (4.1) Update the new_cases of Belgica on 2021-09-10 to 2200 (previous value was 2190)
-- (4.2) Update the new_cases of Belgium on 2021-09-10 to 3200 (previous value was 2190)
-- (4.3) Update the new_cases of Belgium on 2021-09-10 to 2200 (previous value was 2190)
+
+## (4.1) Update the new_cases of Belgica on 2021-09-10 to 2200 (previous value was 2190)
+
+## (4.2) Update the new_cases of Belgium on 2021-09-10 to 3200 (previous value was 2190)
+
+## (4.3) Update the new_cases of Belgium on 2021-09-10 to 2200 (previous value was 2190)
 
 ### Testcode 1
 
+```sql
 BEGIN TRANSACTION
 -- Original value = 2190
 EXEC UpdateNewCases 'Belgica', '2021-09-10', 2200
 
 -- Only you (in your session) can see changes
 SELECT \* FROM coviddata cd JOIN countries c ON c.iso_code = cd.iso_code
-WHERE c.country = 'Belgium' and report_date >= '2021-09-10'
+WHERE c.country = 'Belgium' AND report_date >= '2021-09-10'
 
 ROLLBACK;
+```
 
 ### Testcode 2
 
+```sql
 BEGIN TRANSACTION
 -- Original value = 2190
 EXEC UpdateNewCases 'Belgium', '2021-09-10', 3200
 
 -- only you (in your session) can see changes
 SELECT \* FROM coviddata cd JOIN countries c ON c.iso_code = cd.iso_code
-WHERE c.country = 'Belgium' and report_date >= '2021-09-10'
+WHERE c.country = 'Belgium' AND report_date >= '2021-09-10'
 
 ROLLBACK;
+```
 
 ### Testcode 3
 
+```sql
 BEGIN TRANSACTION
 -- Original value = 2190
 EXEC UpdateNewCases 'Belgium', '2021-09-10', 2200
 
 -- only you (in your session) can see changes
 SELECT \* FROM coviddata cd JOIN countries c ON c.iso_code = cd.iso_code
-WHERE c.country = 'Belgium' and report_date >= '2021-09-10'
+WHERE c.country = 'Belgium' AND report_date >= '2021-09-10'
 
 ROLLBACK;
+```
 
 # Exercise 2
 
@@ -69,42 +78,50 @@ ROLLBACK;
 ## (3) Write testcode. Use transactions in order to keep the original data unchanged.
 
 - You can find the error messages in Messages
-- (3.1) Update the population of Belgica to 11600000
-- (3.2) Update the population of Belgium to 21600000
-- (3.3) Update the population of Belgium to 11600000
+
+## (3.1) Update the population of Belgica to 11600000
+
+## (3.2) Update the population of Belgium to 21600000
+
+## (3.3) Update the population of Belgium to 11600000
 
 ### Testcode 1
 
-begin transaction 
+```sql
+BEGIN TRANSACTION 
 -- Original value = 11589616
 EXEC UpdatePopulation 'Belgica', 11600000
 
 -- only you (in your session) can see changes
-select population from countries where country = 'Belgium'
-
-rollback;
+SELECTION population FROM countries WHERE country = 'Belgium'
+ROLLBACK;
+```
 
 ### Testcode 2
 
-begin transaction 
+```sql
+BEGIN TRANSACTION 
 -- Original value = 11589616
 EXEC UpdatePopulation 'Belgium', 21600000
 
 -- only you (in your session) can see changes
-select population from countries where country = 'Belgium'
+SELECT population FROM countries WHERE country = 'Belgium'
 
-rollback;
+ROLLBACK;
+```
 
 ### Testcode 3
 
-begin transaction 
+```sql
+BEGIN TRANSACTION
 -- Original value = 11589616
 EXEC UpdatePopulation 'Belgium', 11600000
 
 -- only you (in your session) can see changes
-select population from countries where country = 'Belgium'
+SELECT population FROM countries WHERE country = 'Belgium'
 
-rollback;
+ROLLBACK;
+```
 
 # Exercise 3
 
@@ -125,7 +142,7 @@ rollback;
 - We define the beginning (ending) of a golf.
 - When the 14 days moving average of positive_rate becomes >= (<) 0.06.
 
-/\*
+```
 Start Golf 1: 07 Mar 2020
 End Golf 1: 05 May 2020
 
@@ -137,4 +154,4 @@ Number of days in Golf 2: 101
 
 Number of deaths in Golf 1: 8016
 Number of deaths in Golf 2: 10230
-\*/
+```
