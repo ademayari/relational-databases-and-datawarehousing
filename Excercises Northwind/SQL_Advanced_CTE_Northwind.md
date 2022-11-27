@@ -1,12 +1,13 @@
-/_ Common Table Expression _/
+## Common Table Expression: The WITH component
 
-/_ Common Table Expression: The WITH component _/
+- Give the average number of orders for all customers
 
--- Give the average number of orders for all customers
--- Solution 1
--- First calculate the number of orders per customer (Subquery in FROM)
--- Afterwards calculate the AVG
+### Solution 1
 
+- First calculate the number of orders per customer (Subquery in FROM)
+- Afterwards calculate the AVG
+
+```sql
 SELECT AVG(numberOfOrders * 1.0) As AverageNumberOfOrdersPerCustomer -- *1.0 to force floating point
 FROM
 (
@@ -14,11 +15,13 @@ SELECT customerid, COUNT(orderid)
 FROM orders
 GROUP BY customerid
 ) AS numberOfOrdersPerCustomer(customerid, numberOfOrders)
+```
 
--- Solution 2
--- Using the WITH-component you can give the subquery its own name (with column names)
--- and reuse it in the rest of the query (possibly several times):
+### Solution 2
 
+- Using the WITH-component you can give the subquery its own name (with column names) and reuse it in the rest of the query (possibly several times):
+
+```sql
 WITH numberOfOrdersPerCustomer(customerid, numberOfOrders) AS
 (SELECT customerid, COUNT(orderid)
 FROM orders
@@ -26,6 +29,7 @@ GROUP BY customerid)
 
 SELECT AVG(numberOfOrders \* 1.0) As AverageNumberOfOrdersPerCustomer
 FROM numberOfOrdersPerCustomer
+```
 
 --The columns in the CTE should have a name, so
 --you can refer to these columns.
