@@ -310,30 +310,36 @@ ORDER BY Orderid;
      | Suprêmes délices | Belgium |
 
 - 4. Calculate how much is earned by the management (like 'president' or 'manager'), the submanagement (like 'coordinator') and the rest
-     TitleClass TotalSalary
-     Management 145000.00
-     Rest 241000.00
-     SubManagment 51000.00
+     | TitleClass |TotalSalary |
+     | :----------|:---------- |
+     | Management |145000.00 |
+     | Rest |241000.00 |
+     | SubManagment| 51000.00 |
 
 - 5. Give for each product how much the price differs from the average price of all products of the same category
-     ProductID ProductName UnitPrice differenceToCategory
-     1 Chai 18,00 -19,9791
-     2 Chang 19,00 -18,9791
-     3 Aniseed Syrup 10,00 -13,0625
-     4 Chef Anton's Cajun Seasoning 22,00 -1,0625
+     | ProductID |ProductName| UnitPrice| differenceToCategory |
+     | :--------|:-----------|:---------|:-------------------- |
+     | 1 Chai |18,00| -19,9791 |
+     | 2 Chang |19,00 |-18,9791 |
+     | 3 Aniseed Syrup| 10,00| -13,0625 |
+     | 4 Chef Anton's Cajun Seasoning| 22,00| -1,0625 |
 
 - 6. Give per title the employee that was last hired
-     title FullName HireDate
-     Vice President, Sales Andrew Fuller 2012-08-14 00:00:00.000
-     Sales Representative Anne Dodsworth 2014-11-15 00:00:00.000
-     Sales Manager Steven Buchanan 2013-10-17 00:00:00.000
-     Inside Sales Coordinator Laura Callahan 2014-03-05 00:00:00.000
+     | title |FullName| HireDate |
+     | :-----|:-------|:------------------------------------------------ |
+     | Vice President| Sales Andrew Fuller| 2012-08-14 00:00:00.000 |
+     | Sales Representative |Anne Dodsworth |2014-11-15 00:00:00.000 |
+     | Sales Manager |Steven Buchanan |2013-10-17 00:00:00.000 |
+     | Inside Sales Coordinator| Laura Callahan| 2014-03-05 00:00:00.000 |
 
 - 7. Which employee has processed most orders?
-     Margaret Peacock 156
+     | Margaret Peacock 156 |
+     | :------------------- |
 
 - 8. What's the most common ContactTitle in Customers?
-     Owner
+     | Owner |
+     | :---- |
 
 - 9. Is there a supplier that has the same name as a customer?
-     Empty dataset
+     | Empty dataset |
+     | :------------ |
