@@ -1,6 +1,8 @@
--- Exercise 1
--- Create the following overview. First give the SQL statement, then use a cursor to get the following layout
-/\*
+# Exercise 1
+
+## Create the following overview. First give the SQL statement, then use a cursor to get the following layout.
+
+```
 Africa
 
 - Number of countries = 55
@@ -20,27 +22,34 @@ Africa
   South America
 - Number of countries = 13
 - Total population = 433,953,687
-  \*/
+```
 
--- Exercise 2: Give per continent a list with the 5 countries with the highest number of deaths
--- Step 1: Give a list of all continents. First give the SQL statement, then use a cursor to get the following layout
--- - Africa
--- - Asia
--- - Europe
--- - North America
--- - Oceania
--- - South America
+# Exercise 2: Give per continent a list with the 5 countries with the highest number of deaths.
 
--- Step 2: Give the countries with the highest number of deaths for Africa. First give the SQL statement, then use a cursor to get the following layout
---South Africa 101823
---Tunisia 29247
---Egypt 24796
---Morocco 16276
---Ethiopia 7572
+## Step 1: Give a list of all continents. First give the SQL statement, then use a cursor to get the following layout.
 
--- Step 3: Combine both cursors to get the following result
-/\*
+```
+- Africa
+- Asia
+- Europe
+- North America
+- Oceania
+- South America
+```
 
+## Step 2: Give the countries with the highest number of deaths for Africa. First give the SQL statement, then use a cursor to get the following layout.
+
+```
+South Africa 101823
+Tunisia 29247
+Egypt 24796
+Morocco 16276
+Ethiopia 7572
+```
+
+## Step 3: Combine both cursors to get the following result.
+
+```
 - Africa
   South Africa 101823
   Tunisia 29247
@@ -77,24 +86,26 @@ Africa
   Colombia 141746
   Argentina 126479
   Chile 48531
-  \*/
+```
 
--- Step 4: Replace the TOP 5 values by a cte with dense_rank
+## Step 4: Replace the TOP 5 values by a cte with dense_rank.
 
--- Solution Step 1
+### Solution Step 1
 
--- Solution Step 2
+### Solution Step 2
 
--- Solution Step 3
+### Solution Step 3
 
--- Solution Step 4
+### Solution Step 4
 
--- Exercise 3
--- Make the following, visual overview for the total number of new_cases / 5000 for Belgium for each week starting from 2021-01-01
--- This makes it more clear which are the weeks with a lot of new_cases
--- Use the function REPLICATE to get the x's
+# Exercise 3
 
-/_
+## Make the following, visual overview for the total number of new_cases / 5000 for Belgium for each week starting from 2021-01-01.
+
+- This makes it more clear which are the weeks with a lot of new_cases.
+- Use the function REPLICATE to get the x's.
+
+```
 2021 1
 2021 2 xx
 2021 3 xx
@@ -186,4 +197,4 @@ Africa
 2022 36 xx
 2022 37 x
 2022 38 xx
-_/
+```
