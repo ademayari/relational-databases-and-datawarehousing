@@ -319,10 +319,10 @@ ORDER BY Orderid;
 - 5. Give for each product how much the price differs from the average price of all products of the same category
      | ProductID |ProductName| UnitPrice| differenceToCategory |
      | :--------|:-----------|:---------|:-------------------- |
-     | 1 Chai |18,00| -19,9791 |
-     | 2 Chang |19,00 |-18,9791 |
-     | 3 Aniseed Syrup| 10,00| -13,0625 |
-     | 4 Chef Anton's Cajun Seasoning| 22,00| -1,0625 |
+     | 1 |Chai |18,00| -19,9791 |
+     | 2 |Chang |19,00 |-18,9791 |
+     | 3 |Aniseed Syrup| 10,00| -13,0625 |
+     | 4 |Chef Anton's Cajun Seasoning| 22,00| -1,0625 |
 
 - 6. Give per title the employee that was last hired
      | title |FullName| HireDate |
