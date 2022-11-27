@@ -201,6 +201,8 @@ ROLLBACK;
 - We define the beginning (ending) of a golf.
 - When the 14 days moving average of positive_rate becomes >= (<) 0.06.
 
+### Stored Procedure Code
+
 ```sql
 CREATE OR ALTER PROCEDURE Golfs
 AS
