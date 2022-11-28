@@ -1,8 +1,5 @@
-/**********\*\*\*\***********/
-/**\*\*\*** Triggers **\*\*\*\***/
-/**********\*\*\*\***********/
+# Triggers
 
-/\*
 A trigger: a database program, consisting of procedural and declarative instructons,
 saved in the catalogue and activated by the DBMS if a certain operation on the database
 is executed and if a certain condition is satisfied.
@@ -77,17 +74,15 @@ Virtual tables with triggers --> zie slides
   _ During update or insert each affected row is copied from the triggering table to the inserted table
   _ All rows from the inserted table are also in the triggering table
 
-\*/
+## Delete after - trigger
 
-/**************\*\*\***************/
-/\***\* Delete after - trigger **/
-/**************\*\*\***************/
+- Triggering instruction is a delete instruction
+- deleted – logical table with columns equal to columns of triggering table, containing a copy of delete rows
 
--- Triggering instruction is a delete instruction
--- deleted – logical table with columns equal to columns of triggering table, containing a copy of delete rows
+- If a record in OrderDetails is removed => UnitsInStock in Products is updated
+- 1st try
 
--- If a record in OrderDetails is removed => UnitsInStock in Products is updated
--- 1st try
+```sql
 CREATE OR ALTER TRIGGER deleteOrderDetails ON OrderDetails FOR delete
 AS
 DECLARE @deletedProductID INT = (SELECT ProductID From deleted)
@@ -95,17 +90,23 @@ DECLARE @deletedQuantity SmallINT = (SELECT Quantity From deleted)
 UPDATE Products
 SET UnitsInStock = UnitsInStock + @deletedQuantity
 FROM Products WHERE ProductID = @deletedProductID
+```
 
--- Testcode
+#### Testcode
+
+```sql
 BEGIN TRANSACTION
 SELECT _ FROM Products WHERE ProductID = 14 OR ProductID = 51
 DELETE FROM OrderDetails WHERE OrderID = 10249
 SELECT _ FROM Products WHERE ProductID = 14 OR ProductID = 51
 ROLLBACK
+```
 
--- In the previous solution: more than 1 record in deleted
--- => use a cursor to loop through all the records in deleted
--- 2nd try
+- In the previous solution: more than 1 record in deleted
+- => use a cursor to loop through all the records in deleted
+- 2nd try
+
+```sql
 CREATE OR ALTER TRIGGER deleteOrderDetails ON OrderDetails FOR delete
 AS
 DECLARE deleted_cursor CURSOR
@@ -113,13 +114,20 @@ FOR
 SELECT ProductID, Quantity
 FROM deleted
 
+
 DECLARE @ProductID INT
 DECLARE @Quantity SmallINT
+```
 
--- open cursor
+- open cursor
+
+```sql
 OPEN deleted_cursor
+```
 
--- fetch data
+- fetch data
+
+```sql
 FETCH NEXT FROM deleted_cursor INTO @ProductID, @Quantity
 
 WHILE @@FETCH_STATUS = 0
@@ -129,31 +137,41 @@ SET UnitsInStock = UnitsInStock + @Quantity
 FROM Products WHERE ProductID = @ProductID
 FETCH NEXT FROM deleted_cursor INTO @ProductID, @Quantity
 END
+```
 
--- close cursor
+- close cursor
+
+```sql
 CLOSE deleted_cursor
+```
 
--- deallocate cursor
+- deallocate cursor
+
+```sql
 DEALLOCATE deleted_cursor
+```
 
--- Testcode
+#### Testcode
+
+```sql
 BEGIN TRANSACTION
 SELECT _ FROM Products WHERE ProductID = 14 OR ProductID = 51
 DELETE FROM OrderDetails WHERE OrderID = 10249
 SELECT _ FROM Products WHERE ProductID = 14 OR ProductID = 51
 ROLLBACK
+```
 
-/**************\*\*\***************/
-/\***\* Insert after - trigger **/
-/**************\*\*\***************/
+## Insert after - trigger
 
--- Triggering instruction is an insert statement
--- inserted – logical table with columns equal to columns of triggering table, containing a copy of inserted rows
--- Remark: when triggering by INSERT-SELECT statement more than one record can be added at once.
--- The trigger code is executed only once, but will insert a new record for each inserted record
+- Triggering instruction is an insert statement
+- inserted – logical table with columns equal to columns of triggering table, containing a copy of inserted rows
+- Remark: when triggering by INSERT-SELECT statement more than one record can be added at once.
+- The trigger code is executed only once, but will insert a new record for each inserted record
 
--- If a new record is inserted in OrderDetails => check if the unitPrice is not too low or too high
--- If so, rollback the transaction and raise an error
+- If a new record is inserted in OrderDetails => check if the unitPrice is not too low or too high
+- If so, rollback the transaction and raise an error
+
+```sql
 CREATE OR ALTER TRIGGER insertOrderDetails ON OrderDetails FOR insert
 AS
 DECLARE @insertedProductID INT = (SELECT ProductID From inserted)
@@ -164,22 +182,26 @@ BEGIN
 ROLLBACK TRANSACTION
 RAISERROR ('The inserted unit price can''t be correct', 14,1)
 END
+```
 
--- Testcode
+#### Testcode
+
+```sql
 BEGIN TRANSACTION
 INSERT INTO OrderDetails
 VALUES (10249, 72, 60.00, 10, 0.15)
 SELECT \* FROM OrderDetails WHERE OrderID = 10249
 ROLLBACK
+```
 
-/**************\*\*\***************/
-/\***\* Update after - trigger **/
-/**************\*\*\***************/
+## Update after - trigger
 
--- Triggering instruction is an update statement
+- Triggering instruction is an update statement
 
--- If a record is updated in OrderDetails => check if the new unitPrice is not too low or too high
--- If so, rollback the transaction and raise an error
+- If a record is updated in OrderDetails => check if the new unitPrice is not too low or too high
+- If so, rollback the transaction and raise an error
+
+```sql
 CREATE OR ALTER TRIGGER updateOrderDetails ON OrderDetails FOR update
 AS
 DECLARE @updatedProductID INT = (SELECT ProductID From inserted)
@@ -190,16 +212,21 @@ BEGIN
 ROLLBACK TRANSACTION
 RAISERROR ('The updated unit price can''t be correct', 14,1)
 END
+```
 
--- Testcode
+#### Testcode
+
+```sql
 BEGIN TRANSACTION
 UPDATE OrderDetails SET UnitPrice = 60 WHERE OrderID = 10249 AND ProductID = 14
 SELECT \* FROM OrderDetails WHERE OrderID = 10249
 ROLLBACK
+```
 
--- Conditional execution of triggers:
-execute only if a specific column is mentioned in update or insert
+- Conditional execution of triggers:
+  - execute only if a specific column is mentioned in update or insert
 
+```sql
 CREATE OR ALTER TRIGGER updateOrderDetails ON OrderDetails FOR update
 AS
 -- If a record is updated in OrderDetails => check if the new unitPrice is not too low or too high
@@ -215,9 +242,12 @@ ROLLBACK TRANSACTION
 RAISERROR ('The updated unit price can''t be correct', 14,1)
 END
 END
+```
 
 -- If a record is updated in OrderDetails => check if the new discount is not too low or too high
 -- If so, rollback the transaction and raise an error
+
+```sql
 IF update(Discount)
 BEGIN
 SELECT Discount FROM inserted
@@ -228,6 +258,7 @@ ROLLBACK TRANSACTION
 RAISERROR ('The updated discount can''t be correct', 15,1)
 END
 END
+```
 
 -- Testcode
 BEGIN TRANSACTION
@@ -235,17 +266,17 @@ UPDATE OrderDetails SET Discount = 0.5 WHERE OrderID = 10249 AND ProductID = 14
 SELECT \* FROM OrderDetails WHERE OrderID = 10249
 ROLLBACK
 
-/****************\*\*****************/
+/**\*\***\*\*\*\***\*\***\*\***\*\***\*\*\*\***\*\***/
 /\***\* Triggers and transactions **/
-/****************\*\*****************/
+/**\*\***\*\*\*\***\*\***\*\***\*\***\*\*\*\***\*\***/
 
 -- A trigger is part of the same transaction as the triggering instruction
 -- Inside the trigger this transaction can be ROLLBACKed
 -- Although a trigger in SQL Server occurs after the triggering instruction, that instruction can still be undone in the trigger
 
-/******************************\*\*\*\*******************************/
-/\***\* 1 trigger for insert and/or update and/or delete **\*\*\*****/
-/******************************\*\*\*\*******************************/
+/**\*\***\*\***\*\***\*\***\*\***\*\***\*\***\*\*\*\***\*\***\*\***\*\***\*\***\*\***\*\***\*\***/
+/\***\* 1 trigger for insert and/or update and/or delete **\*\*\*\***\*/
+/\*\***\*\***\*\***\*\*\*\***\*\***\*\***\*\***\*\*\*\***\*\***\*\***\*\***\*\***\*\***\*\***\*\***/
 
 -- 1 Trigger can be used for update and/or insert and/or delete
 -- If necessary, you can distinguish between insert, update and delete
@@ -281,9 +312,9 @@ UPDATE OrderDetails SET UnitPrice = 60 WHERE OrderID = 10249 AND ProductID = 14
 SELECT \* FROM OrderDetails WHERE OrderID = 10249
 ROLLBACK
 
-/******\*\*\*\*******/
+/**\*\***\*\*\*\***\*\***/
 /\***\* Remarks **/
-/******\*\*\*\*******/
+/**\*\***\*\*\*\***\*\***/
 
 /\*
 In addition to differences in syntax, the SQL products also differ in the functionality of triggers.
@@ -302,9 +333,9 @@ Some interesting questions are:
 - Can triggers be defined on catalog tables?
   \*/
 
-/********\*\*********/
+/**\*\*\*\***\*\***\*\*\*\***/
 /\***\* Exercises **/
-/********\*\*********/
+/**\*\*\*\***\*\***\*\*\*\***/
 
 -- Exercise 1
 -- Create a trigger that, when adding a new employee, sets the reportsTo attribute
