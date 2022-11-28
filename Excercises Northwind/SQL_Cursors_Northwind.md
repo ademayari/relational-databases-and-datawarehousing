@@ -115,39 +115,40 @@ DECLARE products_cursor CURSOR FOR
 SELECT ProductID, ProductName, UnitPrice FROM Products WHERE SupplierID = @supplierID
 ```
 
-    - open cursor
+- open cursor
 
 ```sql
- OPEN products_cursor
+OPEN products_cursor
 ```
 
-    - fetch data
+- fetch data
 
 ```sql
-    FETCH NEXT FROM products_cursor INTO @productID, @productName, @unitPrice
+FETCH NEXT FROM products_cursor INTO @productID, @productName, @unitPrice
 
-    WHILE @@FETCH_STATUS = 0
-    BEGIN
-    	PRINT '- ' + STR(@productID) + ' ' + @productName + ' ' + STR(@unitPrice) + 'EUR'
-    	FETCH NEXT FROM products_cursor INTO @productID, @productName, @unitPrice
-    END
+WHILE @@FETCH_STATUS = 0
+BEGIN
+  PRINT '- ' + STR(@productID) + ' ' + @productName + ' ' + STR(@unitPrice) + 'EUR'
+  FETCH NEXT FROM products_cursor INTO @productID, @productName, @unitPrice
+END
 
-    CLOSE products_cursor
+CLOSE products_cursor
 ```
 
-    - deallocate cursor
-    ```sql
-    DEALLOCATE products_cursor
-    ```
+- deallocate cursor
 
-    - end inner cursor
+```sql
+DEALLOCATE products_cursor
+```
+
+- end inner cursor
 
 ```sql
 FETCH NEXT FROM suppliers_cursor INTO @supplierID, @companyName, @city
 END
 ```
 
---close cursor
+- close cursor
 
 ```sql
 CLOSE suppliers_cursor
