@@ -244,8 +244,8 @@ END
 END
 ```
 
--- If a record is updated in OrderDetails => check if the new discount is not too low or too high
--- If so, rollback the transaction and raise an error
+- If a record is updated in OrderDetails => check if the new discount is not too low or too high
+- If so, rollback the transaction and raise an error
 
 ```sql
 IF update(Discount)
@@ -260,41 +260,48 @@ END
 END
 ```
 
--- Testcode
+#### Testcode
+
+```sql
 BEGIN TRANSACTION
 UPDATE OrderDetails SET Discount = 0.5 WHERE OrderID = 10249 AND ProductID = 14
 SELECT \* FROM OrderDetails WHERE OrderID = 10249
 ROLLBACK
+```
 
-/**\*\***\*\*\*\***\*\***\*\***\*\***\*\*\*\***\*\***/
-/\***\* Triggers and transactions **/
-/**\*\***\*\*\*\***\*\***\*\***\*\***\*\*\*\***\*\***/
+## Triggers and transactions
 
--- A trigger is part of the same transaction as the triggering instruction
--- Inside the trigger this transaction can be ROLLBACKed
--- Although a trigger in SQL Server occurs after the triggering instruction, that instruction can still be undone in the trigger
+- A trigger is part of the same transaction as the triggering instruction
+- Inside the trigger this transaction can be ROLLBACKed
+- Although a trigger in SQL Server occurs after the triggering instruction, that instruction can still be undone in the trigger
 
-/**\*\***\*\***\*\***\*\***\*\***\*\***\*\***\*\*\*\***\*\***\*\***\*\***\*\***\*\***\*\***\*\***/
-/\***\* 1 trigger for insert and/or update and/or delete **\*\*\*\***\*/
-/\*\***\*\***\*\***\*\*\*\***\*\***\*\***\*\***\*\*\*\***\*\***\*\***\*\***\*\***\*\***\*\***\*\***/
+### 1 trigger for insert and/or update and/or delete
 
--- 1 Trigger can be used for update and/or insert and/or delete
--- If necessary, you can distinguish between insert, update and delete
+- 1 Trigger can be used for update and/or insert and/or delete
+- If necessary, you can distinguish between insert, update and delete
 
--- To check if this is an insert operation
+- To check if this is an insert operation
+
+```sql
 IF NOT EXISTS (SELECT \* FROM deleted)
 BEGIN
 
 END
+```
 
--- To check if this is a delete operation
+- To check if this is a delete operation
+
+```sql
 IF NOT EXISTS (SELECT \* FROM inserted)
 BEGIN
 
 END
+```
 
--- If a record is inserted or updated in OrderDetails => check if the new unitPrice is not too low or too high
--- If so, rollback the transaction and raise an error
+- If a record is inserted or updated in OrderDetails => check if the new unitPrice is not too low or too high
+- If so, rollback the transaction and raise an error
+
+```sql
 CREATE OR ALTER TRIGGER updateOrInsertOrderDetails ON OrderDetails FOR update, insert
 AS
 DECLARE @updatedProductID INT = (SELECT ProductID From inserted)
@@ -306,17 +313,19 @@ ROLLBACK TRANSACTION
 RAISERROR ('The unit price can''t be correct', 14,1)
 END
 
--- Testcode
+```
+
+#### Testcode
+
+```sql
 BEGIN TRANSACTION
 UPDATE OrderDetails SET UnitPrice = 60 WHERE OrderID = 10249 AND ProductID = 14
 SELECT \* FROM OrderDetails WHERE OrderID = 10249
 ROLLBACK
+```
 
-/**\*\***\*\*\*\***\*\***/
-/\***\* Remarks **/
-/**\*\***\*\*\*\***\*\***/
+## Remarks
 
-/\*
 In addition to differences in syntax, the SQL products also differ in the functionality of triggers.
 Some interesting questions are:
 
@@ -331,17 +340,16 @@ Some interesting questions are:
 - When exactly is a trigger action processed?
   Immediately after the change or before the commit statement
 - Can triggers be defined on catalog tables?
-  \*/
 
-/**\*\*\*\***\*\***\*\*\*\***/
-/\***\* Exercises **/
-/**\*\*\*\***\*\***\*\*\*\***/
+## Exercises
 
--- Exercise 1
--- Create a trigger that, when adding a new employee, sets the reportsTo attribute
--- to the employee to whom the least number of employees already report.
+### Exercise 1
 
--- Testcode
+- Create a trigger that, when adding a new employee, sets the reportsTo attribute to the employee to whom the least number of employees already report.
+
+#### Testcode
+
+```sql
 BEGIN TRANSACTION
 INSERT INTO Employees(LastName,FirstName)
 VALUES ('New','Emplo');
@@ -349,21 +357,24 @@ VALUES ('New','Emplo');
 SELECT EmployeeID, LastName, FirstName, ReportsTo
 FROM Employees
 ROLLBACK
+```
 
--- Exercise 2
-/\*
+### Exercise 2
+
 Create a new table called ProductsAudit with the following columns:
-AuditID --> Primary Key + Identity
-UserName --> NVARCHAR(128) + Default value = SystemUser
-CreatedAt --> DateTime + Default value = UTC Time
-Operation --> NVARCHAR(10): The name of the operation we performed on a row (Updated, Created, Deleted)
+
+- AuditID --> Primary Key + Identity
+- UserName --> NVARCHAR(128) + Default value = SystemUser
+- CreatedAt --> DateTime + Default value = UTC Time
+- Operation --> NVARCHAR(10): The name of the operation we performed on a row (Updated, Created, Deleted)
 
 If the table is already present, drop it.
 Create a trigger for all actions (Update, Delete, Insert) to persist the mutation of the Products table.
 Use system functions to populate the UserName and CreatedAt.
-\*/
 
--- TestCode
+#### TestCode
+
+```sql
 BEGIN TRANSACTION
 DECLARE @productId INT;
 
@@ -381,3 +392,5 @@ WHERE ProductID = @productId
 
 SELECT \* FROM ProductsAudit -- Changes should be seen here.
 ROLLBACK
+
+```
