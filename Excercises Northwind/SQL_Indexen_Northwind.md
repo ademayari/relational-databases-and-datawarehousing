@@ -73,7 +73,7 @@ SELECT lastname, firstname FROM Employee1
 WHERE lastname LIKE '%r%'
 ```
 
-# Tips & Tricks:
+# Tips & Tricks
 
 ## (1) Avoid the use of functions
 
