@@ -24,6 +24,38 @@ Africa
 - Total population = 433,953,687
 ```
 
+### SQL Statement
+
+```sql
+SELECT continent, COUNT(DISTINCT country) AS Number_of_countries, SUM(CAST(population AS BIGINT)) AS Total_population
+FROM countries
+GROUP BY continent
+```
+
+### Cursor
+
+```sql
+DECLARE @continent varchar(100), @number_of_countries int, @total_population bigint
+
+DECLARE corona_cursor_5 CURSOR FOR
+SELECT continent, COUNT(DISTINCT country) AS Number_of_countries, SUM(CAST(population AS BIGINT)) AS Total_population
+FROM countries
+GROUP BY continent
+
+OPEN corona_cursor_5
+FETCH NEXT FROM corona_cursor_5 INTO  @continent, @number_of_countries, @total_population
+WHILE @@FETCH_STATUS = 0
+	BEGIN
+		PRINT @continent
+		PRINT ' - Number of countries = ' + str(@number_of_countries)
+		PRINT ' - Total population = ' + format(@total_population, 'N0')
+		FETCH NEXT FROM corona_cursor_5 INTO  @continent, @number_of_countries, @total_population
+	END
+CLOSE corona_cursor_5
+
+DEALLOCATE corona_cursor_5
+```
+
 # Exercise 2
 
 ## Give per continent a list with the 5 countries with the highest number of deaths.
@@ -39,6 +71,28 @@ Africa
 - South America
 ```
 
+```sql
+DECLARE @continent varchar(50)
+
+DECLARE cursor_corona_3 CURSOR FOR
+SELECT DISTINCT continent
+FROM countries
+
+OPEN cursor_corona_3
+
+FETCH NEXT FROM cursor_corona_3 INTO @continent
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+PRINT ' - ' + @continent
+FETCH NEXT FROM cursor_corona_3 INTO @continent
+END
+
+CLOSE cursor_corona_3
+DEALLOCATE cursor_corona_3
+
+```
+
 ## Step 2: Give the countries with the highest number of deaths for Africa. First give the SQL statement, then use a cursor to get the following layout.
 
 ```
@@ -47,6 +101,30 @@ Tunisia 29247
 Egypt 24796
 Morocco 16276
 Ethiopia 7572
+```
+
+```sql
+DECLARE @country varchar(50), @new_deaths int
+
+DECLARE cursor_corona_4 CURSOR FOR
+SELECT TOP 5 c.country, sum(ISNULL(cd.new_deaths, 0))
+FROM countries c JOIN CovidData cd ON c.iso_code = cd.iso_code
+WHERE c.continent = 'Africa'
+GROUP BY c.country
+ORDER BY 2 DESC;
+
+OPEN cursor_corona_4
+
+FETCH NEXT FROM cursor_corona_4 INTO @country, @new_deaths
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+PRINT @country + ' ' + str(@new_deaths)
+FETCH NEXT FROM cursor_corona_4 INTO @country, @new_deaths
+END
+
+CLOSE cursor_corona_4
+DEALLOCATE cursor_corona_4
 ```
 
 ## Step 3: Combine both cursors to get the following result.
@@ -92,13 +170,58 @@ Ethiopia 7572
 
 ## Step 4: Replace the TOP 5 values by a cte with dense_rank.
 
-### Solution Step 1
+```sql
+DECLARE @continent nvarchar(50)
+DECLARE @country nvarchar(50), @new_deaths int
+DECLARE cursor_corona_3 CURSOR FOR
+SELECT DISTINCT continent
+FROM countries
 
-### Solution Step 2
+OPEN cursor_corona_3
 
-### Solution Step 3
+FETCH NEXT FROM cursor_corona_3 INTO @continent
 
-### Solution Step 4
+WHILE @@FETCH_STATUS = 0
+
+BEGIN
+PRINT ' - ' + @continent
+-- begin inner cursor
+DECLARE cursor_corona_4 CURSOR FOR
+WITH cte_corona(country, total_deaths, d_rank) AS
+(
+SELECT TOP 5 c.country, sum(ISNULL(cd.new_deaths, 0)),
+dense_rank() OVER (ORDER BY sum(ISNULL(new_deaths, 0)) DESC) AS 'rank'
+FROM countries c JOIN CovidData cd ON c.iso_code = cd.iso_code
+WHERE c.continent = @continent
+GROUP BY c.country
+)
+
+SELECT country, total_deaths FROM cte_corona WHERE d_rank <= 5;
+
+OPEN cursor_corona_4
+
+FETCH NEXT FROM cursor_corona_4 INTO @country, @new_deaths
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+PRINT @country + ' ' + str(@new_deaths)
+FETCH NEXT FROM cursor_corona_4 INTO @country, @new_deaths
+END
+
+CLOSE cursor_corona_4
+DEALLOCATE cursor_corona_4
+-- end inner cursor
+FETCH NEXT FROM cursor_corona_3 INTO @continent
+END
+
+CLOSE cursor_corona_3
+DEALLOCATE cursor_corona_3
+
+SELECT year(report_date), datepart(week, report_date), SUM(new_cases) / 500.0
+FROM coviddata cd JOIN countries c ON cd.iso_code = c.iso_code
+WHERE year(report_date) = 2021 AND c.country = 'Belgium'
+GROUP BY year(report_date), datepart(week, report_date)
+```
 
 # Exercise 3
 
@@ -106,6 +229,51 @@ Ethiopia 7572
 
 - This makes it more clear which are the weeks with a lot of new_cases.
 - Use the function REPLICATE to get the x's.
+
+### declare cursor
+
+```sql
+DECLARE corona_cursor CURSOR
+FOR
+SELECT YEAR(report_date), DATEPART(week, report_date), sum(new_cases) / 5000
+FROM coviddata cd JOIN countries c ON cd.iso_code = c.iso_code
+WHERE c.country = 'Belgium' AND report_date >= '2021-01-01'
+GROUP BY YEAR(report_date), DATEPART(week, report_date)
+ORDER BY 1, 2
+
+DECLARE @year INT, @weeknumber INT, @sumNewCases INT
+```
+
+### open cursor
+
+```sql
+OPEN corona_cursor
+```
+
+### fetch data
+
+```sql
+FETCH NEXT FROM corona_cursor INTO @year, @weeknumber, @sumNewCases
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	PRINT str(@year) + ' ' + str(@weekNumber, 2) + ' ' + REPLICATE('x',@sumNewCases)
+  	FETCH NEXT FROM corona_cursor INTO @year, @weeknumber, @sumNewCases
+END
+
+```
+
+### close cursor
+
+```sql
+CLOSE corona_cursor
+```
+
+### deallocate cursor
+
+```sql
+DEALLOCATE corona_cursor
+```
 
 ```
 2021 1
